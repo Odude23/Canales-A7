@@ -1,0 +1,108 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">        
+        
+        <style>
+            .card
+            {
+                min-height: 150px;
+                min-width: 400px;
+                background-color: #000000;
+                margin-bottom: 5px;
+                margin-left: 3px;
+                margin-right: 3px;
+            }
+            .green
+            {
+                min-height: 150px;
+                min-width: 400px;
+                background-color: #04f921;
+                margin-bottom: 5px;
+                margin-left: 3px;
+                margin-right: 3px;
+            }
+            .red
+            {
+                min-height: 150px;
+                min-width: 400px;
+                background-color: #f20c0c;
+                margin-bottom: 5px;
+                margin-left: 3px;
+                margin-right: 3px;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <div class="container">
+            <br>
+            <h3>Find the Green Box!</h3>
+            <br><br>
+            <div id="boxes" class="row justify-content-center">
+                
+            </div>
+            <br><br>
+            <p id=number>Guesses made: </p> 
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>        
+        
+        
+        
+        <script>
+        /* global $ */
+        $(document).ready(function() 
+        {
+            // model...
+            let model = {};
+
+            function initializeModel()
+            {
+                model.cards = 6;
+                model.green = Math.floor(Math.random() * model.cards);
+                model.count = 0;
+            }
+            
+            // view...
+            function updateView()
+            {
+                $('#boxes').empty();                
+                for (var i = 0; i< model.cards; i++) 
+                {
+                    let item = $("<div></div>");
+                    item.attr("id", i);
+                    item.addClass("card");
+                    $('#boxes').append(item);
+                }
+            }
+            
+            //on click...
+            $(document).on("click", ".cards", function()
+            {
+                console.log('You clicked ', $(this).attr('id'));
+                if ()
+                {
+                    
+                }
+                else if()
+                {
+                    
+                }
+                else
+                {
+                    model.cards.push({ id: model.count, });
+                    model.count = model.count+1;
+                }
+                
+                updateView();
+            });
+            
+            //count
+            document.getElementById("number").innerHTML = model.count;
+            
+            initializeModel();
+            updateView();
+        });
+        </script>
+    </body>
+</html>
