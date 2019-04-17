@@ -38,16 +38,34 @@
             <br>
             <h3>Find the Green Box!</h3>
             <br><br>
-            <div id="boxes" class="row justify-content-center">
+            <div id="boxes" class="row">
                 
             </div>
             <br><br>
-            <p id=number>Guesses made: </p> 
+            <h5>Guesses made:<p id=count></p></h5>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>        
         
-        
+        <div id='confirm' class="modal" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header bg-dark text-light">
+                <h5 class="modal-title">You Win!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p>Would You like to play again?</p>
+              </div>
+              <div class="modal-footer">
+                <button id='yes' type="button" class="btn btn-primary">Yes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+              </div>
+            </div>
+          </div>
+        </div>
         
         <script>
         /* global $ */
@@ -59,46 +77,91 @@
             function initializeModel()
             {
                 model.cards = 6;
+                model.selected = -1;
+                model.cardList = [];
                 model.green = Math.floor(Math.random() * model.cards);
                 model.count = 0;
+                model.gameOver = false;
+                for(var x; x<model.cards; x++)
+                {
+                    if (x == model.green)
+                    {
+                        model.cardList.push({green: true, flipped: false});
+                    }
+                    else
+                    {
+                        model.cardList.push({green:false, flipped: false});
+                    }
+                }
+                
             }
             
             // view...
             function updateView()
             {
                 $('#boxes').empty();                
-                for (var i = 0; i< model.cards; i++) 
+                for (var i in model.cardList) 
                 {
                     let item = $("<div></div>");
+                    item.addClass("col-6").addClass("card").addClass("border");
                     item.attr("id", i);
-                    item.addClass("card");
+                    if(model.cardList[i].green == true && model.cardList[i].flipped == true)
+                    {
+                        item.addClass("green");
+                    }
+                    else if(model.cardList[i].green == false && model.cardList[i].flipped == true)
+                    {
+                        item.addClass("red");
+                    }
+                    else
+                    {
+                        item.addClass("card");
+                    }
                     $('#boxes').append(item);
                 }
+                $('#count').text(model.count);
             }
             
             //on click...
-            $(document).on("click", ".cards", function()
+            
+            $(document).on("click",".cards",function() 
             {
-                console.log('You clicked ', $(this).attr('id'));
-                if ()
+                if(model.gameOver == false)
                 {
-                    
+                    model.guesses++;
+                    model.selected = $(this).attr('id');
+                    model.cardList[model.selected].flipped = true;
+                    updateView();
+                    console.log(model.guesses);
+                    if(model.selected == model.green)
+                    {
+                        console.log("You've found the green card!");
+                        model.gameOver = true;
+                        winGameModal();
+                    }
                 }
-                else if()
-                {
-                    
-                }
-                else
-                {
-                    model.cards.push({ id: model.count, });
-                    model.count = model.count+1;
-                }
-                
-                updateView();
             });
             
-            //count
-            document.getElementById("number").innerHTML = model.count;
+            // End of Game Modal...
+            function winGameModal()
+            {
+                $('#confirm').modal('show');
+                $('#yes').click(function()
+                {
+                    $('#confirm').modal('hide');
+                    $('#confirm').on('hide', function()
+                    {
+                        window.location.reload();
+                    });
+                    initializeModel();
+                    updateView();
+                });
+                $('#btn-secondary').click(function()
+                {
+                    model.gameOver = true;
+                    $('#confirm').modal('hide');
+                });
+            }
             
             initializeModel();
             updateView();
